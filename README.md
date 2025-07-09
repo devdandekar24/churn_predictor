@@ -1,129 +1,135 @@
-# 📊 Customer Churn Prediction
 
-A Machine Learning project to predict customer churn using the [Telco Customer Churn Dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn).
+# 🔍 Customer Churn Prediction Using Machine Learning
 
----
+This project aims to build a model to predict customer churn based on customer demographics, account information, and service usage using the **Telco Customer Churn dataset** from Kaggle.
 
-## 🚀 Overview
-
-This project focuses on building predictive models to identify customers likely to churn. The complete pipeline includes:
-
-* Data preprocessing & feature engineering
-* Handling class imbalance (SMOTE and downsampling)
-* Model training, hyperparameter tuning (GridSearchCV)
-* Model comparison (Random Forest, XGBoost, CatBoost)
-* Streamlit-based deployment for user-friendly predictions
+> 📂 **Dataset Link**: [Telco Customer Churn – Kaggle](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
 
 ---
 
-## 📊 Dataset
+## 📌 Objective
 
-* Dataset: [Telco Customer Churn - Kaggle](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
-* Target variable: `Churn` (Yes/No)
-
----
-
-## 🎯 Model Comparison
-
-| Metric               | Random Forest | CatBoost | XGBoost |
-| -------------------- | ------------- | -------- | ------- |
-| **Train ROC AUC**    | 0.7921        | 0.7937   | 0.7814  |
-| **Test ROC AUC**     | **0.8631** ✅  | 0.8594   | 0.8580  |
-| **Accuracy**         | **76%** ✅     | 75%      | 75%     |
-| **Recall (Churn)**   | **86%** ✅     | 83%      | 82%     |
-| **F1-score (Churn)** | **0.65** ✅    | 0.63     | 0.63    |
-
-> ⭐ **Best Performing Model**: **Random Forest Classifier**
+To build an accurate machine learning model that identifies customers likely to churn so that telecom companies can take proactive steps to retain them.
 
 ---
 
-## 📅 Features Used
+## ⚙️ Project Workflow
 
-* Demographics: `gender`, `SeniorCitizen`, `Partner`, `Dependents`
-* Services: `PhoneService`, `InternetService`, `OnlineSecurity`, `StreamingTV`, etc.
-* Billing: `Contract`, `PaperlessBilling`, `PaymentMethod`, `MonthlyCharges`, `TotalCharges`
-
----
-
-## 📆 Preprocessing
-
-* Categorical Encoding using LabelEncoders (stored using `pickle`)
-* Numeric Feature Scaling for `MonthlyCharges` and `TotalCharges`
-* SMOTE + Downsampling used to balance class distribution
+- Data cleaning and preprocessing
+- Label encoding of categorical features
+- **Handled class imbalance using downsampling**  
+  _(SMOTE caused severe overfitting: Random Forest hit 99.8% train accuracy)_
+- Training with multiple classifiers
+- **Hyperparameter tuning using `RandomizedSearchCV`** (also tried GridSearchCV)
+- Model evaluation using test accuracy, F1-score, recall, and ROC AUC
+- Deployment using **Streamlit**
 
 ---
 
-## ⚖️ Model Training
+## 🧠 Models Trained & Compared
 
-* Train/Test Split with stratification
-* StratifiedKFold Cross Validation
-* GridSearchCV for tuning:
+| Model         | ROC AUC (Test) | Accuracy | Recall (Churn) | F1-score (Churn) |
+| ------------- | ------------- | -------- | -------------- | ---------------- |
+| **Random Forest** ✅ | **0.8631** | **76%**   | **86%**         | **65%**           |
+| XGBoost       | 0.8580        | 75%      | 82%             | 63%              |
+| CatBoost      | 0.8594        | 75%      | 83%             | 63%              |
 
-  * `RandomForestClassifier`
-  * `XGBoostClassifier`
-  * `CatBoostClassifier`
+> 🔎 **Best model**: Random Forest – highest ROC AUC, best balance of recall and F1-score
 
 ---
 
-## 🏙️ Deployment
+## 📈 Model Evaluation (Random Forest)
 
-The project includes a fully interactive **Streamlit Web App**:
-
-* Select model: Random Forest, CatBoost, XGBoost
-* Input customer details manually
-* Prediction + Probability of churn
-
-### Run the app locally:
-
-```bash
-streamlit run app.py
+```
+Train ROC AUC: 0.7921
+Test ROC AUC: 0.8631
+Accuracy: 76%
+Recall (Churn): 86%
+F1-score (Churn): 65%
 ```
 
 ---
 
-## 🛠️ Tech Stack
+## 🧪 Preprocessing Details
 
-* Python 3
-* Pandas, NumPy
-* Scikit-learn
-* XGBoost, CatBoost
-* SMOTE (imbalanced-learn)
-* Streamlit (deployment)
-* Pickle (model persistence)
-
----
-
-## 📊 Future Enhancements
-
-* SHAP/ELI5 explainability
-* Try Voting Classifier or model stacking
-* Host on Streamlit Cloud / Hugging Face Spaces
-* Add feature selection or dimensionality reduction
+| Step                | Description |
+|--------------------|-------------|
+| Categorical Encoding | Label Encoding via `sklearn.preprocessing.LabelEncoder` |
+| SMOTE   | Used **SMOTE for upsampling**, result gave better recall for non-churn but my aim was to better predict churn, so preferred **downsampling** |
+| Class Imbalance     | Used **downsampling** to balance churn/no-churn classes |
+| Hyperparameter Tuning | Used `RandomizedSearchCV` with `StratifiedKFold` |
+| Feature Engineering | Tried binning `tenure` into groups, but found **negligible impact**, so reverted |
 
 ---
 
-## 🎉 Acknowledgements
+## 🚀 Streamlit Web App
 
-* Dataset: [Kaggle Telco Customer Churn](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
+A user-friendly web app is created using **Streamlit** to allow real-time predictions.
 
----
+### 🔧 Features:
+- Choose between **Random Forest**, **XGBoost**, or **CatBoost**
+- Input form for customer attributes
+- Shows prediction result and churn probability
+- All models, encoders, and scalers are reused via `pickle`
 
-## 📦 Project Setup (Optional)
+### 📎 To Run the App:
 
 ```bash
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
+# Step 1: Install dependencies
 pip install -r requirements.txt
 
-# Run Streamlit app
+# Step 2: Run the app
 streamlit run app.py
 ```
 
 ---
+### Link for streamlit app 
 
-> 🌟 Feel free to fork this project and experiment with new models, encoders, or app layouts!
+[Try mychurn predictor](https://mychurn.streamlit.app/)
 
 ---
+
+## 🧰 Tech Stack
+
+- **Python 3.11**
+- **Scikit-learn** (Label Encoding, RandomForest, CV tools)
+- **CatBoost**, **XGBoost**
+- **Streamlit** – for web UI
+- **Pickle** – for model serialization
+- **Pandas**, **NumPy**, **Seaborn**, **Matplotlib**
+
+---
+
+## 🛠 File Structure
+
+```
+Churn_predictor/
+├── app.py                          # Streamlit frontend
+├── customer_churn_randomforest.pkl
+├── customer_churn_catboost.pkl
+├── customer_churn_xgboost.pkl
+├── encoders.pkl
+├── monthlycharges_scaler.pkl
+├── totalcharges_scaler.pkl
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## 💡 Future Work
+
+- Try to reduce overfitting
+- Explore **stacking ensemble** (e.g. RF + XGB + CatBoost)
+- Dockerize for scalable cloud deployment
+- Add logging and analytics dashboard to track model predictions
+
+---
+
+## 🙌 Acknowledgements
+
+- [Telco Customer Churn Dataset – Kaggle](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
+- Scikit-learn, Streamlit, XGBoost, CatBoost
+
+---
+
