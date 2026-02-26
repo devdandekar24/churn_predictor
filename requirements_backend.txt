@@ -1,0 +1,10 @@
+fastapi==0.129.0
+uvicorn==0.40.0
+pandas==2.3.1
+scikit-learn==1.7.0
+xgboost==3.0.2
+pydantic==2.12.5
+numpy==2.3.1
+joblib==1.5.1
+python-multipart
+catboost==1.2.8

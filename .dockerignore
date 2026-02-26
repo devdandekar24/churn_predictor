@@ -1,0 +1,9 @@
+myEnv
+.git
+.vscode
+__pycache__
+*.pyc
+*.ipynb
+app.py
+frontend.py
+changes.md

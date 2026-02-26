@@ -8,8 +8,13 @@ from typing import Dict
 # -------------------------------
 models = {}
 
+import os
+
+# Get the directory of the current file
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 for model_name in ["randomforest", "xgboost", "catboost"]:
-    with open(f"customer_churn_{model_name}.pkl", "rb") as f:
+    with open(os.path.join(BASE_DIR, f"customer_churn_{model_name}.pkl"), "rb") as f:
         data = pickle.load(f)
         models[model_name] = {
             "model": data["model"],
@@ -20,13 +25,13 @@ for model_name in ["randomforest", "xgboost", "catboost"]:
 # -------------------------------
 # Load Encoders and Scalers
 # -------------------------------
-with open("encoders.pkl", "rb") as f:
+with open(os.path.join(BASE_DIR, "encoders.pkl"), "rb") as f:
     encoders = pickle.load(f)
 
-with open("monthlycharges_scaler.pkl", "rb") as f:
+with open(os.path.join(BASE_DIR, "monthlycharges_scaler.pkl"), "rb") as f:
     monthly_scaler = pickle.load(f)
 
-with open("totalcharges_scaler.pkl", "rb") as f:
+with open(os.path.join(BASE_DIR, "totalcharges_scaler.pkl"), "rb") as f:
     total_scaler = pickle.load(f)
 
 
